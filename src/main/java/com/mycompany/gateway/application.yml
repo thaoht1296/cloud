@@ -1,0 +1,25 @@
+server:
+    port: 8800
+management.endpoint.gateway.enable: true
+management.endpoints.web.exposure.include: "*"
+
+spring:
+    cloud:
+        gateway:
+            metrics:
+                enabled: true
+            default-filters:
+                - name: SecureHeaders
+            routes:
+                - id: customer-service
+                  uri: http://localhost:8091
+                  predicates:
+                      - Path=/customers/**
+                -   id: match-service
+                    uri: http://localhost:8092
+                    predicates:
+                        - Path=/matches/**
+                -   id: booking-service
+                    uri: http://localhost:8093
+                    predicates:
+                        - Path=/bookings/**
